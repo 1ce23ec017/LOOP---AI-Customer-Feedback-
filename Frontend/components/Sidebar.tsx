@@ -49,18 +49,58 @@ export default function Sidebar() {
           >
             💬 Feedback
           </Link>
-       </li>
-
-        <li className="hover:bg-slate-700 p-2 rounded cursor-pointer">
-          📈 Analytics
         </li>
 
-        <li className="hover:bg-slate-700 p-2 rounded cursor-pointer">
-          📄 Reports
+        <li>
+          <Link
+            href="/ask"
+            className={`block p-2 rounded cursor-pointer ${
+              pathname === "/ask"
+                ? "bg-blue-600"
+                : "hover:bg-slate-700"
+            }`}
+          >
+            🤖 Ask AI
+          </Link>
         </li>
 
-        <li className="hover:bg-slate-700 p-2 rounded cursor-pointer">
-          ⚙️ Settings
+        <li>
+          <Link
+            href="/trends"
+            className={`block p-2 rounded cursor-pointer ${
+              pathname === "/trends"
+              ? "bg-blue-600"
+              : "hover:bg-slate-700"
+            }`}
+          >
+            📈 Trends
+          </Link>
+        </li>
+
+        <li>
+          <Link
+            href="/reports"
+            className={`block p-2 rounded cursor-pointer ${
+              pathname === "/reports"
+              ? "bg-blue-600"
+              : "hover:bg-slate-700"
+            }`}
+          >
+            📄 Reports
+          </Link>
+        </li>
+
+        <li>
+          <Link
+            href="/settings"
+            className={`block p-2 rounded cursor-pointer ${
+              pathname === "/settings"
+              ? "bg-blue-600"
+              : "hover:bg-slate-700"
+            }`}
+          >
+            ⚙️ Settings
+          </Link>
         </li>
       </ul>
     </aside>
