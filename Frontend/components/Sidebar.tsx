@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { signOut } from "next-auth/react";
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -103,6 +104,12 @@ export default function Sidebar() {
           </Link>
         </li>
       </ul>
+      <button
+        onClick={() => signOut({ callbackUrl: "/login" })}
+        className="w-full mt-8 p-2 rounded bg-red-600 hover:bg-red-700 text-white"
+      >
+        Logout
+      </button>
     </aside>
   );
 }

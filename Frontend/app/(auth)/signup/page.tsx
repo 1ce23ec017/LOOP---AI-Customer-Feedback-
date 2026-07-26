@@ -1,5 +1,46 @@
+"use client";
+import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+
 export default function SignupPage() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+
+  const router = useRouter();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const response = await fetch("/api/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name,
+        email,
+        password,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      setMessage(data.message);
+      setError("");
+      router.push("/login");
+    } else {
+      setError(data.message);
+      setMessage("");
+    }
+    
+    console.log(data);
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-100">
       <div className="w-full max-w-md bg-white shadow-lg rounded-xl p-8">
@@ -11,7 +52,7 @@ export default function SignupPage() {
           Join Project LOOP
         </p>
 
-        <form className="mt-8 space-y-5">
+        <form onSubmit={handleSubmit} className="mt-8 space-y-5">
 
           <div>
             <label className="block mb-2 font-medium">
@@ -21,6 +62,8 @@ export default function SignupPage() {
             <input
               type="text"
               placeholder="Enter your full name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               className="w-full border rounded-lg p-3 outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -33,6 +76,8 @@ export default function SignupPage() {
             <input
               type="email"
               placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="w-full border rounded-lg p-3 outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -45,11 +90,25 @@ export default function SignupPage() {
             <input
               type="password"
               placeholder="Create password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               className="w-full border rounded-lg p-3 outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
-          <button className="w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700">
+          {message && (
+            <p className="text-green-600 text-center">
+              {message}
+            </p>
+          )}
+
+          {error && (
+            <p className="text-red-600 text-center">
+              {error}
+            </p>
+          )}
+
+          <button type="submit" className="w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700">
             Create Account
           </button>
 
