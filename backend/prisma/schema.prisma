@@ -1,0 +1,126 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  ADMIN
+  ANALYST
+  VIEWER
+}
+
+enum FeedbackSource {
+  MANUAL
+  CSV_IMPORT
+  WEB_FORM
+}
+
+enum SentimentLabel {
+  POSITIVE
+  NEGATIVE
+  NEUTRAL
+  MIXED
+}
+
+model User {
+  id          String            @id @default(cuid())
+  name        String
+  email       String            @unique
+  password    String
+  role        Role              @default(VIEWER)
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  feedbacks   Feedback[]
+  memberships WorkspaceMember[]
+  reports     Report[]
+}
+
+model Workspace {
+  id          String            @id @default(cuid())
+  name        String
+  slug        String            @unique
+  description String?
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  members     WorkspaceMember[]
+  feedbacks   Feedback[]
+  themes      Theme[]
+  reports     Report[]
+}
+
+model WorkspaceMember {
+  id          String    @id @default(cuid())
+  workspaceId String
+  userId      String
+  role        Role      @default(VIEWER)
+  createdAt   DateTime  @default(now())
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([workspaceId, userId])
+}
+
+model Feedback {
+  id               String          @id @default(cuid())
+  workspaceId      String
+  authorId         String?
+  customerName     String?
+  email            String?
+  content          String
+  source           FeedbackSource  @default(MANUAL)
+  sentiment        SentimentLabel?
+  sentimentScore   Float?
+  themeId          String?
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+  workspace        Workspace       @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  author           User?           @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  theme            Theme?          @relation(fields: [themeId], references: [id], onDelete: SetNull)
+
+  @@index([workspaceId, createdAt])
+  @@index([sentiment])
+}
+
+model Theme {
+  id           String      @id @default(cuid())
+  workspaceId  String
+  name         String
+  description  String?
+  confidence   Float?
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  workspace    Workspace   @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  feedbacks    Feedback[]
+  reportThemes ReportTheme[]
+}
+
+model Report {
+  id               String        @id @default(cuid())
+  workspaceId      String
+  createdById      String?
+  type             String
+  title            String
+  period           String
+  summary          String?
+  recommendations  Json?
+  generatedAt      DateTime      @default(now())
+  workspace        Workspace     @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  createdBy        User?         @relation(fields: [createdById], references: [id], onDelete: SetNull)
+  reportThemes     ReportTheme[]
+}
+
+model ReportTheme {
+  id         String   @id @default(cuid())
+  reportId   String
+  themeId    String
+  count      Int      @default(0)
+  percentage Float    @default(0)
+  report     Report   @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  theme      Theme    @relation(fields: [themeId], references: [id], onDelete: Cascade)
+
+  @@unique([reportId, themeId])
+}
