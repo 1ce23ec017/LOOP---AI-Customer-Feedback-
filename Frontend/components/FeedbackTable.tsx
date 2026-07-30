@@ -1,43 +1,98 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
+type Feedback = {
+  id: string;
+  content: string;
+  customerLabel: string | null;
+  sentiment: string | null;
+  status: string;
+  createdAt: string;
+};
+
 export default function FeedbackTable() {
+  const [feedbacks, setFeedbacks] = useState<Feedback[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadFeedbacks = async () => {
+      try {
+        const response = await fetch("/api/feedback");
+
+        if (!response.ok) {
+          throw new Error("Failed to load feedback.");
+        }
+
+        const data = await response.json();
+
+        setFeedbacks(data.slice(0, 5));
+      } catch (error) {
+        console.error("Feedback table error:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadFeedbacks();
+  }, []);
+
   return (
-    <div className="mt-10 bg-white rounded-xl shadow-md p-6">
-      <h2 className="text-2xl font-bold mb-4">
+    <div className="mt-10 rounded-xl bg-white p-6 shadow-md">
+      <h2 className="mb-4 text-2xl font-bold">
         Recent Feedback
       </h2>
 
-      <table className="w-full border-collapse">
-        <thead>
-          <tr className="bg-gray-100">
-            <th className="p-3 text-left">Customer</th>
-            <th className="p-3 text-left">Rating</th>
-            <th className="p-3 text-left">Sentiment</th>
-            <th className="p-3 text-left">Status</th>
-          </tr>
-        </thead>
+      {loading ? (
+        <p className="py-6 text-center text-gray-500">
+          Loading feedback...
+        </p>
+      ) : feedbacks.length === 0 ? (
+        <p className="py-6 text-center text-gray-500">
+          No feedback found.
+        </p>
+      ) : (
+        <table className="w-full border-collapse">
+          <thead>
+            <tr className="bg-gray-100">
+              <th className="p-3 text-left">Customer</th>
+              <th className="p-3 text-left">Feedback</th>
+              <th className="p-3 text-left">Sentiment</th>
+              <th className="p-3 text-left">Status</th>
+            </tr>
+          </thead>
 
-        <tbody>
-          <tr className="border-b">
-            <td className="p-3">John</td>
-            <td className="p-3">⭐⭐⭐⭐⭐</td>
-            <td className="p-3 text-green-600">Positive</td>
-            <td className="p-3">Reviewed</td>
-          </tr>
+          <tbody>
+            {feedbacks.map((feedback) => (
+              <tr key={feedback.id} className="border-b">
+                <td className="p-3">
+                  {feedback.customerLabel || "Unknown"}
+                </td>
 
-          <tr className="border-b">
-            <td className="p-3">Sarah</td>
-            <td className="p-3">⭐⭐⭐</td>
-            <td className="p-3 text-yellow-600">Neutral</td>
-            <td className="p-3">Pending</td>
-          </tr>
+                <td className="max-w-md p-3">
+                  {feedback.content}
+                </td>
 
-          <tr>
-            <td className="p-3">David</td>
-            <td className="p-3">⭐⭐</td>
-            <td className="p-3 text-red-600">Negative</td>
-            <td className="p-3">Open</td>
-          </tr>
-        </tbody>
-      </table>
+                <td
+                  className={`p-3 ${
+                    feedback.sentiment === "POSITIVE"
+                      ? "text-green-600"
+                      : feedback.sentiment === "NEGATIVE"
+                      ? "text-red-600"
+                      : "text-yellow-600"
+                  }`}
+                >
+                  {feedback.sentiment || "Not analyzed"}
+                </td>
+
+                <td className="p-3">
+                  {feedback.status}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 }
