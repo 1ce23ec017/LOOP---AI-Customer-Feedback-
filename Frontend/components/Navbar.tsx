@@ -1,20 +1,63 @@
+import Link from "next/link";
+
 export default function Navbar() {
   return (
-  <nav className="fixed top-0 left-0 w-full flex justify-between items-center px-10 py-5 bg-white shadow-md z-50">
-    <h2 className="text-2xl font-bold text-blue-600">
+    <nav className="fixed left-0 top-0 z-50 flex w-full items-center justify-between bg-white px-10 py-5 shadow-md">
+      
+      {/* Logo */}
+      <Link
+        href="/"
+        className="text-2xl font-bold text-blue-600"
+      >
         LOOP AI
-      </h2>
+      </Link>
 
-      <ul className="flex gap-8 text-gray-700 font-medium">
-        <li className="cursor-pointer hover:text-blue-600">Home</li>
-        <li className="cursor-pointer hover:text-blue-600">Dashboard</li>
-        <li className="cursor-pointer hover:text-blue-600">Feedback</li>
-        <li className="cursor-pointer hover:text-blue-600">Reports</li>
+      {/* Navigation */}
+      <ul className="flex gap-8 font-medium text-gray-700">
+        <li>
+          <Link
+            href="/"
+            className="transition hover:text-blue-600"
+          >
+            Home
+          </Link>
+        </li>
+
+        <li>
+          <Link
+            href="/dashboard"
+            className="transition hover:text-blue-600"
+          >
+            Dashboard
+          </Link>
+        </li>
+
+        <li>
+          <Link
+            href="/feedback"
+            className="transition hover:text-blue-600"
+          >
+            Feedback
+          </Link>
+        </li>
+
+        <li>
+          <Link
+            href="/reports"
+            className="transition hover:text-blue-600"
+          >
+            Reports
+          </Link>
+        </li>
       </ul>
 
-      <button className="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700">
+      {/* Login */}
+      <Link
+        href="/login"
+        className="rounded-lg bg-blue-600 px-5 py-2 text-white transition hover:bg-blue-700"
+      >
         Login
-      </button>
+      </Link>
     </nav>
   );
 }

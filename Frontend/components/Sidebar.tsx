@@ -6,6 +6,7 @@ import { signOut } from "next-auth/react";
 
 export default function Sidebar() {
   const pathname = usePathname();
+
   return (
     <aside className="w-64 h-screen bg-slate-900 text-white p-6">
       <h2 className="text-2xl font-bold mb-8">
@@ -13,6 +14,22 @@ export default function Sidebar() {
       </h2>
 
       <ul className="space-y-4">
+
+        {/* Home */}
+        <li>
+          <Link
+            href="/"
+            className={`block p-2 rounded cursor-pointer ${
+              pathname === "/"
+                ? "bg-blue-600"
+                : "hover:bg-slate-700"
+            }`}
+          >
+            🏠 Home
+          </Link>
+        </li>
+
+        {/* Dashboard */}
         <li>
           <Link
             href="/dashboard"
@@ -26,6 +43,7 @@ export default function Sidebar() {
           </Link>
         </li>
 
+        {/* Inbox */}
         <li>
           <Link
             href="/inbox"
@@ -39,6 +57,7 @@ export default function Sidebar() {
           </Link>
         </li>
 
+        {/* Feedback */}
         <li>
           <Link
             href="/feedback"
@@ -52,6 +71,7 @@ export default function Sidebar() {
           </Link>
         </li>
 
+        {/* Ask AI */}
         <li>
           <Link
             href="/ask"
@@ -65,45 +85,51 @@ export default function Sidebar() {
           </Link>
         </li>
 
+        {/* Trends */}
         <li>
           <Link
             href="/trends"
             className={`block p-2 rounded cursor-pointer ${
               pathname === "/trends"
-              ? "bg-blue-600"
-              : "hover:bg-slate-700"
+                ? "bg-blue-600"
+                : "hover:bg-slate-700"
             }`}
           >
             📈 Trends
           </Link>
         </li>
 
+        {/* Reports */}
         <li>
           <Link
             href="/reports"
             className={`block p-2 rounded cursor-pointer ${
               pathname === "/reports"
-              ? "bg-blue-600"
-              : "hover:bg-slate-700"
+                ? "bg-blue-600"
+                : "hover:bg-slate-700"
             }`}
           >
             📄 Reports
           </Link>
         </li>
 
+        {/* Settings */}
         <li>
           <Link
             href="/settings"
             className={`block p-2 rounded cursor-pointer ${
               pathname === "/settings"
-              ? "bg-blue-600"
-              : "hover:bg-slate-700"
+                ? "bg-blue-600"
+                : "hover:bg-slate-700"
             }`}
           >
             ⚙️ Settings
           </Link>
         </li>
+
       </ul>
+
+      {/* Logout */}
       <button
         onClick={() => signOut({ callbackUrl: "/login" })}
         className="w-full mt-8 p-2 rounded bg-red-600 hover:bg-red-700 text-white"
