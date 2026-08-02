@@ -1,4 +1,4 @@
---
+npm install next@latest eslint@latest eslint-config-next@latest--
 -- PostgreSQL database dump
 --
 
