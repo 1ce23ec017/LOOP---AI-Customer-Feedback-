@@ -28,17 +28,32 @@ function loadEnvFiles() {
   }
 }
 
-loadEnvFiles();
+let pool: Pool | undefined;
 
-const connectionString = process.env.DATABASE_URL || process.env.DATABASE_URL_UNPOOLED;
+function getPool(): Pool {
+  if (pool) return pool;
 
-if (!connectionString) {
-  throw new Error("DATABASE_URL is not defined. Make sure the workspace root .env file is loaded.");
+  loadEnvFiles();
+
+  const connectionString = process.env.DATABASE_URL || process.env.DATABASE_URL_UNPOOLED;
+
+  if (!connectionString) {
+    throw new Error("DATABASE_URL is not defined. Make sure the workspace root .env file is loaded.");
+  }
+
+  pool = new Pool({
+    connectionString,
+    ssl: { rejectUnauthorized: false },
+  });
+
+  return pool;
 }
 
-const pool = new Pool({
-  connectionString,
-  ssl: { rejectUnauthorized: false },
-});
+export const db = new Proxy({} as Pool, {
+  get(_target, property) {
+    const instance = getPool() as unknown as Record<string | symbol, unknown>;
+    const value = instance[property];
 
-export const db = pool;
+    return typeof value === "function" ? value.bind(instance) : value;
+  },
+});

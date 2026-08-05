@@ -119,7 +119,7 @@ export async function POST(request: Request) {
           workspaceId,
           content,
           source: "CSV_IMPORT",
-          sentiment: analysis.sentiment as any,
+          sentiment: analysis.sentiment,
           sentimentScore: analysis.sentimentScore,
           themeId: theme.id,
         },

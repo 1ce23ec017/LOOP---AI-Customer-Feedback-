@@ -1,13 +1,20 @@
 import Anthropic from "@anthropic-ai/sdk";
+import { SentimentLabel } from "../generated/prisma/enums";
 
 const apiKey = process.env.ANTHROPIC_API_KEY;
+
+function toSentimentLabel(value: unknown): SentimentLabel {
+  return typeof value === "string" && value in SentimentLabel
+    ? (value as SentimentLabel)
+    : SentimentLabel.NEUTRAL;
+}
 
 export const anthropic = apiKey ? new Anthropic({ apiKey }) : null;
 
 export async function analyzeFeedback(content: string) {
   if (!anthropic) {
     return {
-      sentiment: "NEUTRAL",
+      sentiment: SentimentLabel.NEUTRAL,
       sentimentScore: 0,
       theme: "General",
       confidence: 0.5,
@@ -29,14 +36,14 @@ export async function analyzeFeedback(content: string) {
   try {
     const parsed = JSON.parse(text);
     return {
-      sentiment: parsed.sentiment ?? "NEUTRAL",
+      sentiment: toSentimentLabel(parsed.sentiment),
       sentimentScore: typeof parsed.sentimentScore === "number" ? parsed.sentimentScore : 0,
       theme: parsed.theme ?? "General",
       confidence: typeof parsed.confidence === "number" ? parsed.confidence : 0.5,
     };
   } catch {
     return {
-      sentiment: "NEUTRAL",
+      sentiment: SentimentLabel.NEUTRAL,
       sentimentScore: 0,
       theme: "General",
       confidence: 0.5,
