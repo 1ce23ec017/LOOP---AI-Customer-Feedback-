@@ -23,7 +23,7 @@ export async function POST(request: Request) {
     });
 
     return NextResponse.json({ message: "Login successful" }, { status: 200 });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Login failed" }, { status: 401 });
   }
 }
