@@ -12,45 +12,6 @@ export default function Navbar() {
         LOOP AI
       </Link>
 
-      {/* Navigation */}
-      <ul className="flex gap-8 font-medium text-gray-700">
-        <li>
-          <Link
-            href="/"
-            className="transition hover:text-blue-600"
-          >
-            Home
-          </Link>
-        </li>
-
-        <li>
-          <Link
-            href="/dashboard"
-            className="transition hover:text-blue-600"
-          >
-            Dashboard
-          </Link>
-        </li>
-
-        <li>
-          <Link
-            href="/feedback"
-            className="transition hover:text-blue-600"
-          >
-            Feedback
-          </Link>
-        </li>
-
-        <li>
-          <Link
-            href="/reports"
-            className="transition hover:text-blue-600"
-          >
-            Reports
-          </Link>
-        </li>
-      </ul>
-
       {/* Login */}
       <Link
         href="/login"
@@ -58,6 +19,7 @@ export default function Navbar() {
       >
         Login
       </Link>
+
     </nav>
   );
 }

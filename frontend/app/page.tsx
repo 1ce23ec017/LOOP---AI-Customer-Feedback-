@@ -60,48 +60,47 @@ export default function Home() {
             </h2>
 
             <p className="mt-3 text-center text-gray-500">
-              Manage and understand customer feedback from one platform.
+              Powerful tools to help you understand customer feedback.
             </p>
 
             <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
-              <Link
-                href="/feedback"
-                className="rounded-xl border border-gray-200 bg-gray-50 p-6 transition hover:-translate-y-1 hover:shadow-md"
-              >
+
+              {/* Customer Feedback */}
+              <div className="rounded-xl border border-gray-200 bg-gray-50 p-6">
                 <h3 className="text-xl font-semibold text-gray-900">
                   💬 Customer Feedback
                 </h3>
 
                 <p className="mt-3 text-sm leading-6 text-gray-600">
-                  Collect and review customer feedback in one place.
+                  Collect customer feedback and organize it in one centralized
+                  platform.
                 </p>
-              </Link>
+              </div>
 
-              <Link
-                href="/trends"
-                className="rounded-xl border border-gray-200 bg-gray-50 p-6 transition hover:-translate-y-1 hover:shadow-md"
-              >
+              {/* Feedback Trends */}
+              <div className="rounded-xl border border-gray-200 bg-gray-50 p-6">
                 <h3 className="text-xl font-semibold text-gray-900">
                   📊 Feedback Trends
                 </h3>
 
                 <p className="mt-3 text-sm leading-6 text-gray-600">
-                  Analyze positive, negative, and neutral feedback trends.
+                  Understand customer sentiment and identify important
+                  feedback trends.
                 </p>
-              </Link>
+              </div>
 
-              <Link
-                href="/ask"
-                className="rounded-xl border border-gray-200 bg-gray-50 p-6 transition hover:-translate-y-1 hover:shadow-md"
-              >
+              {/* AI Insights */}
+              <div className="rounded-xl border border-gray-200 bg-gray-50 p-6">
                 <h3 className="text-xl font-semibold text-gray-900">
                   🤖 Ask LOOP AI
                 </h3>
 
                 <p className="mt-3 text-sm leading-6 text-gray-600">
-                  Ask questions and get insights from your customer feedback.
+                  Get intelligent insights from your customer feedback using
+                  AI-powered analysis.
                 </p>
-              </Link>
+              </div>
+
             </div>
           </div>
         </section>
