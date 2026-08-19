@@ -7,6 +7,14 @@ import { signOut } from "next-auth/react";
 export default function Sidebar() {
   const pathname = usePathname();
 
+  const handleLogout = async () => {
+    await signOut({
+      redirect: false,
+    });
+
+    window.location.href = "/login";
+  };
+
   return (
     <aside className="w-64 h-screen bg-slate-900 text-white p-6">
       <h2 className="text-2xl font-bold mb-8">
@@ -131,7 +139,7 @@ export default function Sidebar() {
 
       {/* Logout */}
       <button
-        onClick={() => signOut({ callbackUrl: "/login" })}
+        onClick={handleLogout}
         className="w-full mt-8 p-2 rounded bg-red-600 hover:bg-red-700 text-white"
       >
         Logout
